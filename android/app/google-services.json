@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "751080532954",
+    "project_id": "fluxapp-7298a",
+    "storage_bucket": "fluxapp-7298a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751080532954:android:21778a8f26721bd5d2eee3",
+        "android_client_info": {
+          "package_name": "com.ecom"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "751080532954-cfv7hk0pumros2iur5m1is5g1sf574ub.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHSIA00sFp13f4-INHWV8A9BLdL1hiFsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "751080532954-cfv7hk0pumros2iur5m1is5g1sf574ub.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

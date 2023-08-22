@@ -17,9 +17,15 @@ import {
   responsiveWidth as rw,
   responsiveScreenWidth as rf,
 } from 'react-native-responsive-dimensions';
-import AntIcon from "react-native-vector-icons/AntDesign"
-import EvilIcons from "react-native-vector-icons/EvilIcons"
+import AntIcon from 'react-native-vector-icons/AntDesign';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import auth from '@react-native-firebase/auth';
+import {
+  GoogleSignin,
+  // statusCodes,
+  // GoogleSigninButton,
+} from '@react-native-google-signin/google-signin';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
 
 interface Iprops {
   navigation?: {
@@ -31,12 +37,8 @@ interface IStte {
     placeholder: string;
     type: KeyboardTypeOptions;
   }[];
-  userData:{
-    name:string,
-    email:string,
-    password:string,
-    confirmPassword:string
-  }
+
+  userDetails:string[]
 }
 export class SignUp extends Component<Iprops, IStte> {
   constructor(props: Iprops) {
@@ -61,75 +63,112 @@ export class SignUp extends Component<Iprops, IStte> {
           type: 'default',
         },
       ],
-      userData:{
-        name:"",
-        email:"",
-        password:"",
-        confirmPassword:""
-      }
+  
+      userDetails:["","","",""]
     };
   }
-  signUp=()=>{
-    const {userData:{name,email,password,confirmPassword}}=this.state;
-    let EmailRegex = new RegExp('[a-z0-9]+@[a-z]+\.[a-z]{2,3}')
-    let PasswordRegex=new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$")
+  signUp = () => {
+    const {
+     
+      userDetails
+    } = this.state;
+    const name=userDetails[0]
+    const email=userDetails[1]
+    const password=userDetails[2]
+    const confirmPassword=userDetails[3]
+    let EmailRegex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
+    let PasswordRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$');
+    console.log(password);
+    if (name == '') {
+      Alert.alert('User Name is required..!');
+    } else if (!EmailRegex.test(email)) {
+      Alert.alert('Email is not valide.!');
+    } else if (password == '' || password.length < 8) {
+      Alert.alert('password should be strong..!');
+    } else if (password != confirmPassword) {
+      Alert.alert('password and confirm passwrd should be same..!');
+    } else {
+      // signInWithEmailAndPassword
+      auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => {
+          Alert.alert('Your account created & signed in!');
+          this.props.navigation?.navigate("home")
+        })
+        .catch(error => {
+          if (error.code === 'auth/email-already-in-use') {
+            Alert.alert('User already in exist!');
+          } else if (error.code === 'auth/invalid-email') {
+            Alert.alert('That email address is invalid!');
+          } else {
+            console.error(error);
+          }
+        });
+    }
+  };
+  inputData = (text: string, index: number) => {
+    const {userDetails} = this.state;
+    userDetails[index]=text;
+    this.setState({userDetails:userDetails})
 
-    if(name){
-        Alert.alert("User Name is required..!")
-        return ;
+  };
+  googleLogin = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      console.log(userInfo);
+      // this.props.navigation.navigate('google');
+    } catch (error: any) {
+      Alert.alert('error', error);
+      // if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+      //   // user cancelled the login flow
+      //   console.log(error, '1');
+      // } else if (error.code === statusCodes.IN_PROGRESS) {
+      //   console.log(error, '2');
+      //   // operation (e.g. sign in) is in progress already
+      // } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+      //   console.log(error, '3');
+      //   // play services not available or outdated
+      // } else {
+      //   console.log(error, '4');
+      //   // some other error happened
+      // }
     }
-    else if(!EmailRegex.test(email)){
-        Alert.alert("Email is not valide.!")
-    }
-    else if(!PasswordRegex.test(password)){
-        Alert.alert("password should be strong..!")
-    }
-    else if(password!=confirmPassword){
-        Alert.alert("password and confirm passwrd should be same..!")
-    }else {
-        auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        console.log('User account created & signed in!');
-      })
-      .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('That email address is already in use!');
-        }
-    
-        if (error.code === 'auth/invalid-email') {
-          console.log('That email address is invalid!');
-        }
-    
-        console.error(error);
+  };
+
+  componentDidMount(): void {
+    // GoogleSignin.configure();
+  }
+
+  revokeSignInWithAppleToken = async () => {
+    // Get an authorizationCode from Apple
+    if (appleAuth.isSupported) {
+      const {authorizationCode} = await appleAuth.performRequest({
+        requestedOperation: appleAuth.Operation.REFRESH,
       });
 
+      // Ensure Apple returned an authorizationCode
+      if (!authorizationCode) {
+        throw new Error(
+          'Apple Revocation failed - no authorizationCode returned',
+        );
+      }
+
+      // Revoke the token
+      return auth().revokeToken(authorizationCode);
+    } else {
+      console.log('Apple Auth was not supported..!');
     }
-  }
-  inputData=(text:string,index:number)=>{
-    const {userData}=this.state;
-    switch(index){
-        case 0:this.setState({userData:{...userData,name:text}})
-        break ;
-        case 1:
-            this.setState({userData:{...userData,email:text}})
-            break;
-        case 2:
-            this.setState({userData:{...userData,password:text}})
-            break;
-        default:
-            this.setState({userData:{...userData,confirmPassword:text}})
-    }
-  }
+  };
 
   render() {
-    const {inputData} = this.state;
+    const {inputData,userDetails} = this.state;
     return (
       <SafeAreaView>
         <View style={styles.container}>
-        <Text style={styles.heading}>Create </Text>
-          <Text style={styles.heading}>your account</Text>
-          <KeyboardAvoidingView>
+          <KeyboardAvoidingView behavior={'position'}>
+            <Text style={styles.heading}>Create </Text>
+            <Text style={styles.heading}>your account</Text>
             <FlatList
               data={inputData}
               renderItem={({item, index}) => {
@@ -140,42 +179,49 @@ export class SignUp extends Component<Iprops, IStte> {
                     secureTextEntry={index > 1}
                     placeholderTextColor={'#00000066'}
                     style={styles.input}
-                    onChangeText={(text)=>this.inputData(text,index)}
+                    testID={"input"+index}
+                    onChangeText={text => this.inputData(text, index)}
+                    value={userDetails[index]}
                   />
                 );
               }}
             />
+
+            <TouchableOpacity style={styles.signupbtn}
+            testID='signup'
+            onPress={this.signUp}>
+              <Text style={styles.signuptext}>SIGN UP</Text>
+            </TouchableOpacity>
           </KeyboardAvoidingView>
-          <TouchableOpacity style={styles.signupbtn}
-          onPress={this.signUp}
-          >
-            <Text style={styles.signuptext}>SIGN UP</Text>
-          </TouchableOpacity>
-         
           <Text style={styles.orwith}>or Log In with</Text>
           <View style={styles.iconcontainer}>
-                <TouchableOpacity style={[styles.iconParent,{paddingHorizontal:rh(0.3)}]}>
-                    <AntIcon name="apple1" size={rh(3)}/>
-                </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconParent}>
-                    <Image source={require("../assets/google.png")}
-                    style={styles.googleimg}
-                    />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={[styles.iconParent,{paddingHorizontal:rh(0.3)}]}>
-                    <EvilIcons name="sc-facebook" size={rh(3.5)}
-                    color={"#3266CE"}
-                    />
-                </TouchableOpacity>
-               
-        </View>
-        <View style={styles.havenAnAc}>
-                    <Text>Already have account?</Text>
-                    <TouchableOpacity style={styles.signin} onPress={()=>this.props.navigation?.navigate("signin")}>
-                        <Text>Log In</Text>
-                    </TouchableOpacity>
-                </View>
+            <TouchableOpacity
+              style={[styles.iconParent, {paddingHorizontal: rh(0.3)}]}
+              onPress={this.revokeSignInWithAppleToken}
+              testID='appleToken'
+              >
+              <AntIcon name="apple1" size={rh(3)} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.iconParent}>
+              <Image
+                source={require('../assets/google.png')}
+                style={styles.googleimg}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.iconParent, {paddingHorizontal: rh(0.3)}]}>
+              <EvilIcons name="sc-facebook" size={rh(3.5)} color={'#3266CE'} />
+            </TouchableOpacity>
           </View>
+          <View style={styles.havenAnAc}>
+            <Text>Already have account?</Text>
+            <TouchableOpacity
+              style={styles.signin}
+              onPress={() => this.props.navigation?.navigate('signin')}>
+              <Text>Log In</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </SafeAreaView>
     );
   }
@@ -207,49 +253,48 @@ const styles = StyleSheet.create({
   },
   signupbtn: {
     backgroundColor: '#2D201C',
-    paddingHorizontal:rw(6),
+    paddingHorizontal: rw(6),
     alignSelf: 'center',
     marginTop: rh(5),
-    paddingVertical:rh(2),
-    borderRadius:rh(5)
+    paddingVertical: rh(2),
+    borderRadius: rh(5),
   },
   signuptext: {
     color: '#fff',
     fontSize: rf(3),
     textAlign: 'center',
-    fontWeight:"600"
+    fontWeight: '600',
   },
-  orwith:{
+  orwith: {
     // fontWeight: '200',
     fontFamily: 'Product Sans Light',
-    marginTop:rh(2),
-    alignSelf:"center",
-    color:"#00000066"
+    marginTop: rh(2),
+    alignSelf: 'center',
+    color: '#00000066',
   },
-  iconcontainer:{
-    flexDirection:"row",
-    justifyContent:"center",
-    marginTop:rh(2)
+  iconcontainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: rh(2),
   },
-  googleimg:{
-    height:rh(4),
-    width:rh(4),
-   
+  googleimg: {
+    height: rh(4),
+    width: rh(4),
   },
-  iconParent:{
-    borderWidth:rh(0.06),
-    borderColor:"#332218",
-    borderRadius:rh(10),
-   alignItems:"center",
-   justifyContent:"center",
-   marginHorizontal:rw(1)
+  iconParent: {
+    borderWidth: rh(0.06),
+    borderColor: '#332218',
+    borderRadius: rh(10),
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: rw(1),
   },
-  havenAnAc:{
-    flexDirection:"row",
-    alignSelf:"center",
-    marginTop:rh(3)
+  havenAnAc: {
+    flexDirection: 'row',
+    alignSelf: 'center',
+    marginTop: rh(3),
   },
-  signin:{
-    borderBottomWidth:rh(0.05)
-  }
+  signin: {
+    borderBottomWidth: rh(0.05),
+  },
 });
