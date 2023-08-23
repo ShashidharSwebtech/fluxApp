@@ -7,7 +7,7 @@ import {
   responsiveScreenWidth as rf,
 } from 'react-native-responsive-dimensions';
 import AntIcon from 'react-native-vector-icons/AntDesign';
-
+import auth from '@react-native-firebase/auth';
 interface Iprops {
   navigation?: {
     navigate: React.FC;
@@ -18,12 +18,28 @@ interface IState {
   email: string;
 }
 export class Forgot extends Component<Iprops, IState> {
+  inputRef0:React.Ref<TextInput>
+  inputRef1:React.Ref<TextInput>
+  inputRef2:React.Ref<TextInput>
+  inputRef3:React.Ref<TextInput>
   constructor(props: Iprops) {
     super(props);
 
     this.state = {
       email: '',
     };
+    this.inputRef0=React.createRef()
+    this.inputRef1=React.createRef()
+    this.inputRef2=React.createRef()
+    this.inputRef3=React.createRef()
+  }
+  passwordReset=async() => {
+    // const {email}=this.state;
+    // const reset=await auth().sendPasswordResetEmail(email)
+    // console.log(reset)
+    // this.props.navigation?.navigate("createPassword")
+
+    this.props.navigation?.navigate("verfication")
   }
   render() {
     const { email } = this.state;
@@ -47,6 +63,7 @@ export class Forgot extends Component<Iprops, IState> {
           />
             <TextInput
               keyboardType="email-address"
+             
               onChangeText={text => this.setState({email: text})}
               style={styles.emailinput}
               value={email}
@@ -56,7 +73,7 @@ export class Forgot extends Component<Iprops, IState> {
             />
           </View>
           <TouchableOpacity style={styles.signInbtn}
-            onPress={() => this.props.navigation?.navigate("verfication")}
+            onPress={() => this.passwordReset()}
             // onPress={()=>this.props.navigation?.navigate("createPassword")}
             testID='navigatetoverfication'
           // 

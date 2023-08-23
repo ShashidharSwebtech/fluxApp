@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  Platform,
 } from 'react-native';
 import React, {Component} from 'react';
 import {
@@ -26,7 +27,7 @@ import {
   // GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
 import {appleAuth} from '@invertase/react-native-apple-authentication';
-
+// import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 interface Iprops {
   navigation?: {
     navigate: React.FC;
@@ -106,6 +107,27 @@ export class SignUp extends Component<Iprops, IStte> {
         });
     }
   };
+// onFacebookButtonPress=async()=> {
+//     // Attempt login with permissions
+//     const result = await LoginManager.logInWithPermissions(['public_profile', 'email']);
+  
+//     if (result.isCancelled) {
+//       throw 'User cancelled the login process';
+//     }
+  
+//     // Once signed in, get the users AccessToken
+//     const data = await AccessToken.getCurrentAccessToken();
+  
+//     if (!data) {
+//       throw 'Something went wrong obtaining access token';
+//     }
+  
+//     // Create a Firebase credential with the AccessToken
+//     const facebookCredential = auth.FacebookAuthProvider.credential(data.accessToken);
+  
+//     // Sign-in the user with the credential
+//     return auth().signInWithCredential(facebookCredential);
+//   }
   inputData = (text: string, index: number) => {
     const {userDetails} = this.state;
     userDetails[index]=text;
@@ -113,31 +135,42 @@ export class SignUp extends Component<Iprops, IStte> {
 
   };
   googleLogin = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo);
-      // this.props.navigation.navigate('google');
-    } catch (error: any) {
-      Alert.alert('error', error);
-      // if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-      //   // user cancelled the login flow
-      //   console.log(error, '1');
-      // } else if (error.code === statusCodes.IN_PROGRESS) {
-      //   console.log(error, '2');
-      //   // operation (e.g. sign in) is in progress already
-      // } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-      //   console.log(error, '3');
-      //   // play services not available or outdated
-      // } else {
-      //   console.log(error, '4');
-      //   // some other error happened
-      // }
-    }
+    console.log("in ios")
+    // if(Platform.OS=="android"){
+      try {
+        await GoogleSignin.hasPlayServices();
+        const userInfo = await GoogleSignin.signIn();
+        Alert.alert(String(userInfo?.user?.name)+"Thanks For Sign Up")
+        console.log(userInfo);
+  
+        this.props.navigation?.navigate('home');
+      } catch (error: any) {
+        Alert.alert(error);
+        // console.log(error)
+        // if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        //   // user cancelled the login flow
+        //   console.log(error, '1');
+        // } else if (error.code === statusCodes.IN_PROGRESS) {
+        //   console.log(error, '2');
+        //   // operation (e.g. sign in) is in progress already
+        // } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        //   console.log(error, '3');
+        //   // play services not available or outdated
+        // } else {
+        //   console.log(error, '4');
+        //   // some other error happened
+        // }
+      }
+
+    // }else {
+    //   Alert.alert("Not Possiable to login")
+    // }
   };
 
   componentDidMount(): void {
-    // GoogleSignin.configure();
+    // if(Platform.OS=="android"){
+      GoogleSignin.configure();
+    // }
   }
 
   revokeSignInWithAppleToken = async () => {
@@ -202,14 +235,18 @@ export class SignUp extends Component<Iprops, IStte> {
               >
               <AntIcon name="apple1" size={rh(3)} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.iconParent}>
+            <TouchableOpacity style={styles.iconParent}
+            onPress={this.googleLogin}
+            >
               <Image
                 source={require('../assets/google.png')}
                 style={styles.googleimg}
               />
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.iconParent, {paddingHorizontal: rh(0.3)}]}>
+              style={[styles.iconParent, {paddingHorizontal: rh(0.3)}]}
+              // onPress={this.onFacebookButtonPress}
+              >
               <EvilIcons name="sc-facebook" size={rh(3.5)} color={'#3266CE'} />
             </TouchableOpacity>
           </View>
@@ -218,7 +255,9 @@ export class SignUp extends Component<Iprops, IStte> {
             <TouchableOpacity
               style={styles.signin}
               testID='navigatetosignin'
-              onPress={() => this.props.navigation?.navigate('signin')}>
+              onPress={() => this.props.navigation?.navigate('signin')}
+              
+              >
               <Text>Log In</Text>
             </TouchableOpacity>
           </View>
