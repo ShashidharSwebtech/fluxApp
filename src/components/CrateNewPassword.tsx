@@ -9,7 +9,7 @@ import {
   KeyboardAvoidingView,
   FlatList,
 } from 'react-native';
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
 import {
   responsiveHeight as rh,
@@ -21,7 +21,7 @@ import FeatherIcon from "react-native-vector-icons/Feather"
 interface Iprops {
   navigation?: {
     navigate: React.FC;
-    goBack: ()=>void;
+    goBack: () => void;
   };
 }
 interface IState {
@@ -29,10 +29,10 @@ interface IState {
     placeholder: string;
     type: KeyboardTypeOptions;
   }[];
-  password:string,
-  confirmPassword:string,
-  eyeshow:boolean[]
-  }
+  password: string,
+  confirmPassword: string,
+  eyeshow: boolean[]
+}
 export class CreateNewPassword extends Component<Iprops, IState> {
   constructor(props: Iprops) {
     super(props);
@@ -49,18 +49,19 @@ export class CreateNewPassword extends Component<Iprops, IState> {
         },
 
       ],
-      password:"",
-      confirmPassword:"",
-      eyeshow:[true,true]
+      password: "",
+      confirmPassword: "",
+      eyeshow: [true, true]
     };
   }
   render() {
-    const {inputData,password,confirmPassword,eyeshow} = this.state;
+    const { inputData, password, confirmPassword, eyeshow } = this.state;
     return (
       <SafeAreaView>
         <View style={styles.container}>
           <TouchableOpacity style={styles.goback}
-            onPress={()=>this.props.navigation?.goBack()}
+            testID='goback'
+            onPress={() => this.props.navigation?.goBack()}
           >
             <AntIcon name="left" size={rh(3)} color={'#000'} />
           </TouchableOpacity>
@@ -72,41 +73,47 @@ export class CreateNewPassword extends Component<Iprops, IState> {
           <KeyboardAvoidingView>
             <FlatList
               data={inputData}
-              renderItem={({item, index}) => {
+              renderItem={({ item, index }) => {
                 return (
-                    <View style={styles.inputParent}>
-                        <TextInput
-                          placeholder={item.placeholder}
-                          keyboardType={item.type}
-                          secureTextEntry={eyeshow[index]}
-                          placeholderTextColor={'#00000066'}
-                          style={styles.input}
-                          onChangeText={(text)=>{
-                            if(index==0)
-                            this.setState({password:text})
-                            else
-                            this.setState({confirmPassword:text})
+                  <View style={styles.inputParent}>
+                    <TextInput
+                      placeholder={item.placeholder}
+                      keyboardType={item.type}
+                      secureTextEntry={eyeshow[index]}
+                      testID={"input" + index}
+                      placeholderTextColor={'#00000066'}
+                      style={styles.input}
+                      onChangeText={(text) => {
+                        if (index == 0)
+                          this.setState({ password: text })
+                        else
+                          this.setState({ confirmPassword: text })
 
-                        }}
-                        />
-                        <TouchableOpacity onPress={()=>{
-                            eyeshow[index]=!eyeshow[index]
-                            this.setState({eyeshow:eyeshow})
-                            }}>
-                        {(index==0&&password!==""||index==1&&confirmPassword!=="")&&<FeatherIcon name={eyeshow[index]?"eye":"eye-off"} size={rh(3)}
+                      }}
+                    />
+                    <TouchableOpacity onPress={() => {
+                      eyeshow[index] = !eyeshow[index]
+                      this.setState({ eyeshow: eyeshow })
+                    }}
+                      testID={"eyebutton" + index}
+                    >
+                      {(index == 0 && password !== "" || index == 1 && confirmPassword !== "") &&
+                        <FeatherIcon name={eyeshow[index] ? "eye" : "eye-off"} size={rh(3)}
                         style={styles.eyeIcon}
+                        // testID={"eyeicon" + index}
                         />}
-                        </TouchableOpacity>
-                        
-                    </View>
+                    </TouchableOpacity>
+
+                  </View>
                 );
               }}
             />
           </KeyboardAvoidingView>
 
           <TouchableOpacity
-          disabled={(password==""||confirmPassword=="")}
-            style={[styles.signInbtn,(password==""||confirmPassword=="")&&{backgroundColor:"rgba(185, 185, 185, 1)"}]}
+            disabled={(password == "" || confirmPassword == "")}
+            testID='navigatetoverfication'
+            style={[styles.signInbtn, (password == "" || confirmPassword == "") && { backgroundColor: "rgba(185, 185, 185, 1)" }]}
             onPress={() => this.props.navigation?.navigate('verfication')}>
             <Text style={styles.signIntext}>Confirm</Text>
           </TouchableOpacity>
@@ -138,7 +145,7 @@ const styles = StyleSheet.create({
     fontWeight: '400',
   },
   input: {
-    width:rw(75),
+    width: rw(75),
     fontSize: rf(4),
     paddingTop: rh(4),
     paddingBottom: rh(2),
@@ -155,7 +162,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 1,
-    shadowOffset: {width: 1, height: 1},
+    shadowOffset: { width: 1, height: 1 },
   },
   eyeIcon: {
     marginTop: rh(2),

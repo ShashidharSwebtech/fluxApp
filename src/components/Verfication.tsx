@@ -40,6 +40,7 @@ export class Verification extends Component<Iprops, IState> {
         <View style={styles.container}>
           <TouchableOpacity style={styles.goback}
           onPress={()=>this.props.navigation?.goBack()}
+            testID='goback'
           >
             <AntIcon name="left" size={rh(3)} color={'#000'} />
           </TouchableOpacity>

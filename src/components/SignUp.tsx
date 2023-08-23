@@ -217,6 +217,7 @@ export class SignUp extends Component<Iprops, IStte> {
             <Text>Already have account?</Text>
             <TouchableOpacity
               style={styles.signin}
+              testID='navigatetosignin'
               onPress={() => this.props.navigation?.navigate('signin')}>
               <Text>Log In</Text>
             </TouchableOpacity>

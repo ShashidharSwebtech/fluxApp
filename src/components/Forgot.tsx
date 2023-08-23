@@ -26,11 +26,13 @@ export class Forgot extends Component<Iprops, IState> {
     };
   }
   render() {
+    const { email } = this.state;
     return (
       <SafeAreaView>
         <View style={styles.container}>
           <TouchableOpacity style={styles.goback}
           onPress={()=>this.props.navigation?.goBack()}
+            testID='goback'
           >
             <AntIcon name="left" size={rh(3)} color={'#000'} />
           </TouchableOpacity>
@@ -47,14 +49,16 @@ export class Forgot extends Component<Iprops, IState> {
               keyboardType="email-address"
               onChangeText={text => this.setState({email: text})}
               style={styles.emailinput}
+              value={email}
               placeholder='enter your email here'
               placeholderTextColor={"#00000099"}
+              testID='emailinput'
             />
           </View>
           <TouchableOpacity style={styles.signInbtn}
-          // onPress={()=>this.props.navigation?.navigate("verfication")}
-          onPress={()=>this.props.navigation?.navigate("createPassword")}
-
+            onPress={() => this.props.navigation?.navigate("verfication")}
+            // onPress={()=>this.props.navigation?.navigate("createPassword")}
+            testID='navigatetoverfication'
           // 
           >
             <Text style={styles.signIntext}>Enter</Text>
