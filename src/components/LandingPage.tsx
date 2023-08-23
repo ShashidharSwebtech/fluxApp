@@ -24,7 +24,7 @@ export class LandingPage extends Component<Iprops> {
   render() {
     return (
       <View>
-        <StatusBar translucent backgroundColor={'transparent'} />
+        {/* <StatusBar translucent backgroundColor={'transparent'} /> */}
 
         <ImageBackground
           source={require('../assets/background.png')}
@@ -38,6 +38,7 @@ export class LandingPage extends Component<Iprops> {
             </View>
 
             <TouchableOpacity style={styles.getstart}
+            testID='shopnow'
             onPress={()=>this.props.navigation?.navigate("shopnow")}
             
             >

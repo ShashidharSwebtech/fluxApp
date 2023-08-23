@@ -39,6 +39,7 @@
 	<string></string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Feather.ttf</string>
 		<string>AntDesign.ttf</string>
 		<string>FontAwesome.ttf</string>
 		<string>EvilIcons.ttf</string>
@@ -55,7 +56,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
 </dict>
 </plist>

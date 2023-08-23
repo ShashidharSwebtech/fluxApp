@@ -10,7 +10,7 @@ import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
   ScrollView,
-  StatusBar,
+
   StyleSheet,
   Text,
   useColorScheme,
@@ -28,6 +28,9 @@ import LandingPage from './src/components/LandingPage';
 import ShopNow from './src/components/ShopNow';
 import SignUp from './src/components/SignUp';
 import SignIn from './src/components/SignIn';
+import Forgot from './src/components/Forgot';
+import Verfication from './src/components/Verfication';
+import CreateNewPassword from './src/components/CrateNewPassword';
 
 const Stack = createStackNavigator();
 
@@ -53,6 +56,9 @@ function App(): JSX.Element {
         <Stack.Screen name="signup" component={SignUp}/>
         <Stack.Screen name="signin" component={SignIn}/>
         <Stack.Screen name="shopnow" component={ShopNow}/>
+        <Stack.Screen name="forgot" component={Forgot}/>
+        <Stack.Screen name="verfication" component={Verfication}/>
+        <Stack.Screen name="createPassword" component={CreateNewPassword}/>
 
 
         </Stack.Navigator>

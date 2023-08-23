@@ -9,6 +9,7 @@ import {
   KeyboardTypeOptions,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 import React, {Component} from 'react';
 import {
@@ -18,6 +19,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import auth from '@react-native-firebase/auth';
 interface Iprops {
   navigation?: {
     navigate: React.FC;
@@ -28,6 +30,8 @@ interface IStte {
     placeholder: string;
     type: KeyboardTypeOptions;
   }[];
+  email:string,
+  password:string
 }
 export class SignIn extends Component<Iprops, IStte> {
   constructor(props: Iprops) {
@@ -44,10 +48,43 @@ export class SignIn extends Component<Iprops, IStte> {
           type: 'default',
         },
       ],
+      email:"",
+      password:""
     };
   }
+  signIn=()=>{
+    const {email,password}=this.state;
+     
+    let EmailRegex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
+
+     if (!EmailRegex.test(email)) {
+      Alert.alert('Email is not valide.!');
+    }
+     auth()
+     .signInWithEmailAndPassword(email, password)
+     .then(() => {
+       Alert.alert('Your Logedin into system!');
+       this.props.navigation?.navigate("home")
+     })
+     .catch(error => {
+       if (error.code === 'auth/email-already-in-use') {
+         Alert.alert('User already in exist!');
+       } else if (error.code === 'auth/invalid-email') {
+         Alert.alert('That email address is invalid!');
+       } else {
+         console.error(error);
+       }
+     });
+  }
+  inputData=(text:string,index:number)=>{
+    if(index==0){
+      this.setState({email:text})
+    }else{
+      this.setState({password:text})
+    }
+  }
   render() {
-    const {inputData} = this.state;
+    const {inputData,email,password} = this.state;
     return (
       <SafeAreaView>
         <View style={styles.container}>
@@ -63,17 +100,26 @@ export class SignIn extends Component<Iprops, IStte> {
                     placeholder={item.placeholder}
                     keyboardType={item.type}
                     secureTextEntry={index > 1}
+                    testID={"input"+index}
                     placeholderTextColor={'#00000066'}
                     style={styles.input}
+                    onChangeText={(text)=>this.inputData(text,index)}
+                    value={index==0?email:password}
                   />
                 );
               }}
             />
           </KeyboardAvoidingView>
-          <TouchableOpacity style={styles.forgot}>
+          <TouchableOpacity style={styles.forgot}
+          testID='forgot'
+          onPress={()=>this.props.navigation?.navigate("forgot")}
+          >
             <Text>Forgot Password?</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.signInbtn}>
+          <TouchableOpacity style={styles.signInbtn}
+          onPress={this.signIn}
+          testID='signin'
+          >
             <Text style={styles.signIntext}>LOG IN</Text>
           </TouchableOpacity>
 
@@ -97,6 +143,7 @@ export class SignIn extends Component<Iprops, IStte> {
           <View style={styles.havenAnAc}>
             <Text>Don’t have an account?</Text>
             <TouchableOpacity
+            testID='signup'
               onPress={() => this.props.navigation?.navigate('signup')}>
               <Text>Sign Up</Text>
             </TouchableOpacity>
