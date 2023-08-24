@@ -64,7 +64,7 @@ export class Verification extends Component<Iprops, IState> {
           <TextInput style={styles.input} keyboardType="numeric"
                   onChangeText={(text)=>{ 
                     if(text.length==1){
-                      this.inputRef1?.current?.focus()
+                      // this.inputRef1?.focus()
                     }
                   }}
                   ref={this.inputRef0}

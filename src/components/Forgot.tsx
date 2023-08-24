@@ -18,20 +18,14 @@ interface IState {
   email: string;
 }
 export class Forgot extends Component<Iprops, IState> {
-  inputRef0:React.Ref<TextInput>
-  inputRef1:React.Ref<TextInput>
-  inputRef2:React.Ref<TextInput>
-  inputRef3:React.Ref<TextInput>
+  
   constructor(props: Iprops) {
     super(props);
 
     this.state = {
       email: '',
     };
-    this.inputRef0=React.createRef()
-    this.inputRef1=React.createRef()
-    this.inputRef2=React.createRef()
-    this.inputRef3=React.createRef()
+    
   }
   passwordReset=async() => {
     // const {email}=this.state;
