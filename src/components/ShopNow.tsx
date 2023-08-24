@@ -125,6 +125,7 @@ export class ShopNow extends Component<Iprops, IState> {
           </View>
           <TouchableOpacity style={style.shopnowbtn}
             onPress={()=>this.props.navigation?.navigate("signup")}
+            testID='signup'
             >
               <Text style={style.btntext}>Shopping now</Text>
             </TouchableOpacity>

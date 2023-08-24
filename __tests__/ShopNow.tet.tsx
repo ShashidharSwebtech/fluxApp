@@ -1,4 +1,4 @@
-import { render } from "@testing-library/react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import ShopNow from "../src/components/ShopNow";
 import Carousel,{Pagination} from "react-native-snap-carousel";
 
@@ -19,9 +19,14 @@ const {View:MockView}=require("react-native")
 //   Pagination: (props:any) => <RealPagination {...props} />
 // };
 // });
-
+jest.mock("react-native-snap-carousel",()=>({
+default:()=>()=><></>,
+Pagination:()=>()=><></>
+}))
 describe("shopNow component",()=>{
     test("rendering component",()=>{
         const {getByTestId}=render(<ShopNow {...props}/>)
+        const signup=getByTestId('signup')
+        fireEvent.press(signup)
     })
 })

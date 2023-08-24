@@ -14,7 +14,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "751080532954-cfv7hk0pumros2iur5m1is5g1sf574ub.apps.googleusercontent.com",
+          "client_id": "751080532954-7o0b1baa3am2tok5a9c7rs9rim4ol27e.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +27,15 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "751080532954-cfv7hk0pumros2iur5m1is5g1sf574ub.apps.googleusercontent.com",
+              "client_id": "751080532954-7o0b1baa3am2tok5a9c7rs9rim4ol27e.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "751080532954-dju69v3h4g867e9385lhin920t3ijtfo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.ecom"
+              }
             }
           ]
         }

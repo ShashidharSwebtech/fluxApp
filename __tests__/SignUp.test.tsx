@@ -60,6 +60,14 @@ describe("Sign up complete",()=>{
         fireEvent.press(signup)
         
     })
+    //
+    test("navigatetosignin", () => {
+        const { getByTestId } = render(<SignUp {...props} />)
+        const navigatetosignin = getByTestId("navigatetosignin")
+        fireEvent.press(navigatetosignin)
+        expect(props.navigation.navigate).toBeCalledWith("signin")
+
+    })
    test("google compoents ",()=>{
     const {getByTestId}=render(<SignUp {...props}/>)
     const appleToken=getByTestId("appleToken")

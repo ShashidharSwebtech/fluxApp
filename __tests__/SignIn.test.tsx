@@ -25,6 +25,7 @@ describe("Sign In component",()=>{
         fireEvent.press(forgot)
         expect(props.navigation.navigate).toBeCalledWith("forgot")
      })
+
      test("input 0",()=>{
         const {getByTestId}= render(<SignIn {...props}/>)
         const input0=getByTestId("input0")
