@@ -33,6 +33,9 @@ import Verfication from './src/components/Verfication';
 import CreateNewPassword from './src/components/CrateNewPassword';
 
 import Bottomtab from './src/components/Bottomtab';
+import SearchFilter from './src/components/SearchFilter';
+import { Provider } from 'react-redux';
+import store from './src/store/Store';
 
 const Stack = createStackNavigator();
 
@@ -46,6 +49,7 @@ function App(): JSX.Element {
   };
 
   return (
+<Provider store={store}>
 
       <NavigationContainer>
         <Stack.Navigator 
@@ -61,10 +65,12 @@ function App(): JSX.Element {
         <Stack.Screen name="forgot" component={Forgot}/>
         <Stack.Screen name="verfication" component={Verfication}/>
         <Stack.Screen name="createPassword" component={CreateNewPassword}/>
+        <Stack.Screen name="searchfilter" component={SearchFilter}/>
 
 
         </Stack.Navigator>
       </NavigationContainer>
+</Provider>
   
 
   );
