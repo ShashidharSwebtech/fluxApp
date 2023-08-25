@@ -6,21 +6,34 @@ jest.mock("react-native-vector-icons/FontAwesome", () => () => <></>)
 jest.mock("react-native-vector-icons/AntDesign", () => () => <></>)
 jest.mock("react-native-vector-icons/Feather", () => () => <></>)
 jest.mock("react-native-vector-icons/EvilIcons", () => () => <></>)
+
+
+
 const props={
     navigation:{
         navigate:jest.fn()
     }
 }
+
+
 jest.mock("@react-native-firebase/auth",()=>()=>({
     createUserWithEmailAndPassword:jest.fn()
     .mockImplementation((...args)=>Promise.resolve(()=>{}))
   }))
   jest.mock("@react-native-google-signin/google-signin",()=>({
-    GoogleSignin:jest.fn()
+      GoogleSignin: {
+          configure: jest.fn(),
+          hasPlayService: jest.fn(),
+          signIn: jest.fn()
+      }
   }))
   jest.mock("@invertase/react-native-apple-authentication",()=>({
     appleAuth:jest.fn().mockImplementation((...args)=>Promise.resolve({}))
   }))
+
+
+
+
 describe("Sign up complete",()=>{
     test("chang text input onchage",()=>{
         const {getByTestId}=render(<SignUp {...props}/>)
@@ -71,8 +84,7 @@ describe("Sign up complete",()=>{
    test("google compoents ",()=>{
     const {getByTestId}=render(<SignUp {...props}/>)
     const appleToken=getByTestId("appleToken")
-    act(()=>{
-
+       act(() => {
         fireEvent.press(appleToken)
     })
    })
