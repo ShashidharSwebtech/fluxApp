@@ -26,6 +26,7 @@ import {
   // statusCodes,
   // GoogleSigninButton,
 } from '@react-native-google-signin/google-signin';
+
 import {appleAuth} from '@invertase/react-native-apple-authentication';
 // import { LoginManager, AccessToken } from 'react-native-fbsdk-next';
 interface Iprops {
@@ -94,7 +95,7 @@ export class SignUp extends Component<Iprops, IStte> {
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
           Alert.alert('Your account created & signed in!');
-          this.props.navigation?.navigate("home")
+          this.props.navigation?.navigate("bottomtab")
         })
         .catch(error => {
           if (error.code === 'auth/email-already-in-use') {
@@ -142,8 +143,7 @@ export class SignUp extends Component<Iprops, IStte> {
         const userInfo = await GoogleSignin.signIn();
         Alert.alert(String(userInfo?.user?.name)+"Thanks For Sign Up")
         console.log(userInfo);
-  
-        this.props.navigation?.navigate('home');
+        this.props.navigation?.navigate('bottomtab');
       } catch (error: any) {
         Alert.alert(error);
         // console.log(error)
