@@ -147,7 +147,7 @@ export class CreateNewPassword extends Component<Iprops, IState> {
             </TouchableOpacity>
             
             
-              <BottomSheet
+              <BottomSheet 
               ref={this.Bottomref}                                       
               index={bottomshitindex}           
                 onAnimate={(from,to)=>{ 

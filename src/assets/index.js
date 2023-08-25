@@ -5,3 +5,11 @@ export const topcollections=require("./topcollections.png")
 export const summercollections=require("./summercollections.png")
 export const downimg1=require("./downimage.png")
 export const downimg2=require("./downimg1.png")
+
+// search images
+export const searchimg1=require("./Searchimg1.png")
+export const searchimg2=require("./searchimg2.png")
+export const searchimg3=require("./searchimg3.png")
+export const searchimg4=require("./searchimg4.png")
+export const searchbtn1=require("./searchbtn1.png")
+export const searchbtn2=require("./searchbtm2.png")

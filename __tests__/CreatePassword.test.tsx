@@ -1,4 +1,4 @@
-import { fireEvent, render } from "@testing-library/react-native";
+import { fireEvent, render, screen } from "@testing-library/react-native";
 import CreateNewPassword from "../src/components/CrateNewPassword";
 import { AnimatedKeyboardOptions } from "react-native-reanimated";
 
@@ -17,14 +17,33 @@ jest.mock("@react-navigation/native", () => {
 jest.mock('@gorhom/bottom-sheet', () => {
     const { View: MockView } = require('react-native');
 
-    // const actualbottomsheet = jest.requireActual("@gorhom/bottom-sheet")
+    const actualbottomsheet = jest.requireActual("@gorhom/bottom-sheet")
     const BottomSheet = (props: any) => <MockView {...props} />
 
     return {
-        // ...actualbottomsheet,
+        ...actualbottomsheet,
         default: { BottomSheet },
     };
 });
+// jest.mock("@gorhom/bottom-sheet",()=>{
+//     // const BottomSheet=()=><></>
+//     // return BottomSheet
+// })
+
+jest.mock('@gorhom/bottom-sheet',() => {
+    return{
+        default:{
+            BottomSheet:({...props})=>({...props})=><></>
+        }
+    }
+})
+
+// jest.mock('react-native-gesture-handler',()=>({
+//     GestureHandlerRootView:()=>()=><></> 
+// }))
+
+
+
 jest.mock('react-native-gesture-handler', () => {
     const { View: MockView } = require('react-native');
     // const actualGesturerHandlerRootView = jest.requireActual("react-native-gesture-handler")
@@ -40,14 +59,21 @@ const props={
     }
 }
 
+test('create password component',()=>{
+    render(<CreateNewPassword/>)
+    // const goBackBtn = screen.getByTestId('goback')
+    // fireEvent.press(goBackBtn)
+    // expect(props.navigation.goBack).toBeCalled()
+})
 
-describe("create PAssword Compoennt",()=>{
-    test("go back", () => {
-        const { getByTestId } = render(<CreateNewPassword {...props} />)
-        // const goback = getByTestId("goback")
-        // fireEvent.press(goback)
-        // expect(props.navigation.goBack).toBeCalled()
-    })
+
+// describe("create PAssword Compoennt",()=>{
+//     test("go back", () => {
+//         const { getByTestId } = render(<CreateNewPassword {...props} />)
+//         const goback = getByTestId("goback")
+//         fireEvent.press(goback)
+//         expect(props.navigation.goBack).toBeCalled()
+//     })
     // test("go back", () => {
     //     const { getByTestId } = render(<CreateNewPassword {...props} />)
     //     const navigatetoverfication = getByTestId("navigatetoverfication")
@@ -94,4 +120,4 @@ describe("create PAssword Compoennt",()=>{
     //     // // const eyeicon = getByTestId("eyeicon0")
     //     // console.log(eyebutton.props.children)
     // })
-})
+// })
