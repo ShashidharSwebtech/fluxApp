@@ -23,7 +23,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Home from './src/components/Home';
+
 import LandingPage from './src/components/LandingPage';
 import ShopNow from './src/components/ShopNow';
 import SignUp from './src/components/SignUp';
@@ -31,6 +31,8 @@ import SignIn from './src/components/SignIn';
 import Forgot from './src/components/Forgot';
 import Verfication from './src/components/Verfication';
 import CreateNewPassword from './src/components/CrateNewPassword';
+
+import Bottomtab from './src/components/Bottomtab';
 
 const Stack = createStackNavigator();
 
@@ -52,7 +54,7 @@ function App(): JSX.Element {
         }}
         >
         <Stack.Screen name="landing" component={LandingPage}/>
-        <Stack.Screen name="home" component={Home}/>
+        <Stack.Screen name="bottomtab" component={Bottomtab}/>
         <Stack.Screen name="signup" component={SignUp}/>
         <Stack.Screen name="signin" component={SignIn}/>
         <Stack.Screen name="shopnow" component={ShopNow}/>
