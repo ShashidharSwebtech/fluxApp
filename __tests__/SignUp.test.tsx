@@ -71,8 +71,7 @@ describe("Sign up complete",()=>{
    test("google compoents ",()=>{
     const {getByTestId}=render(<SignUp {...props}/>)
     const appleToken=getByTestId("appleToken")
-    act(()=>{
-
+       act(() => {
         fireEvent.press(appleToken)
     })
    })
