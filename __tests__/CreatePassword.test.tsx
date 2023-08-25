@@ -6,28 +6,31 @@ jest.mock("react-native-vector-icons/FontAwesome", () => () => <></>)
 jest.mock("react-native-vector-icons/AntDesign", () => () => <></>)
 jest.mock("react-native-vector-icons/Feather", () => () => <></>)
 jest.mock("react-native-vector-icons/EvilIcons", () => () => <></>)
-
+jest.mock("@react-navigation/native", () => {
+    const activeNavigation = jest.requireActual("@react-navigation/native");
+    const { View: MockView } = require("react-native");
+    return {
+        ...activeNavigation,
+        NavigationContainer: () => <MockView />,
+    };
+})
 jest.mock('@gorhom/bottom-sheet', () => {
-    const snapToIndex = jest.fn();
+    const { View: MockView } = require('react-native');
 
-    const mockUseBottomSheet = jest.fn(() => ({
-        snapToIndex,
-    }));
+    // const actualbottomsheet = jest.requireActual("@gorhom/bottom-sheet")
+    const BottomSheet = (props: any) => <MockView {...props} />
 
     return {
-        __esModule: true,
-        useBottomSheet: mockUseBottomSheet,
-        default: {
-            useBottomSheet: mockUseBottomSheet,
-        },
+        // ...actualbottomsheet,
+        default: { BottomSheet },
     };
 });
 jest.mock('react-native-gesture-handler', () => {
-    const View = require('react-native/Libraries/Components/View/View');
-    // const TouchableOpacity = require('react-native/Libraries/Components/Touchable/TouchableOpacity');
+    const { View: MockView } = require('react-native');
+    // const actualGesturerHandlerRootView = jest.requireActual("react-native-gesture-handler")
     return {
-        GestureHandlerRootView: (props: any) => <View>{props.childrens}</View>
-
+        // ...actualGesturerHandlerRootView,
+        GestureHandlerRootView: () => <MockView /> 
     };
 });
 const props={
