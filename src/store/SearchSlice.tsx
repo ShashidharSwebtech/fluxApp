@@ -53,8 +53,7 @@ const searchSlice=createSlice({
     name:"slice",
     initialState:state,
     reducers:{
-        addToSearchHistory:(state,action:{payload:string,type:string})=>{
-          
+        addToSearchHistory:(state,action:{payload:string,type:string})=>{          
             state.history=[...state.history,action.payload]
         },
         removeFromSearchHistory:(state,action)=>{

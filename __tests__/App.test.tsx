@@ -85,6 +85,12 @@ jest.mock("@react-navigation/bottom-tabs", () => ({
     Navigator: () => <></>
   })
 }))
+jest.mock("@react-navigation/drawer",()=>({
+  createDrawerNavigator:()=>({
+      Navigator:()=><></>,
+      Screen:()=><></>
+  })
+}))
 it('renders correctly', () => {
   renderer.create(<App />);
 });

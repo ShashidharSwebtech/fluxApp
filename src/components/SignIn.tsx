@@ -193,7 +193,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   orwith: {
-    // fontWeight: '200',
     fontFamily: 'Product Sans Light',
     marginTop: rh(2),
     alignSelf: 'center',

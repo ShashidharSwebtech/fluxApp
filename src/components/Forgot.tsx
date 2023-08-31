@@ -30,7 +30,7 @@ export class Forgot extends Component<Iprops, IState> {
   passwordReset=async() => {
     // const {email}=this.state;
     // const reset=await auth().sendPasswordResetEmail(email)
-    // console.log(reset)
+
     // this.props.navigation?.navigate("createPassword")
 
     this.props.navigation?.navigate("verfication")

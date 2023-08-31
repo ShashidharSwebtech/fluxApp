@@ -36,6 +36,7 @@ import Bottomtab from './src/components/Bottomtab';
 import SearchFilter from './src/components/SearchFilter';
 import { Provider } from 'react-redux';
 import store from './src/store/Store';
+import MyDrawer from './src/components/BottomTabs/MyDrawer';
 
 const Stack = createStackNavigator();
 
@@ -66,7 +67,7 @@ function App(): JSX.Element {
         <Stack.Screen name="verfication" component={Verfication}/>
         <Stack.Screen name="createPassword" component={CreateNewPassword}/>
         <Stack.Screen name="searchfilter" component={SearchFilter}/>
-
+        <Stack.Screen name="drawer" component={MyDrawer}/>
 
         </Stack.Navigator>
       </NavigationContainer>

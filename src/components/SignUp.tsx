@@ -80,7 +80,7 @@ export class SignUp extends Component<Iprops, IStte> {
     const confirmPassword=userDetails[3]
     let EmailRegex = new RegExp('[a-z0-9]+@[a-z]+.[a-z]{2,3}');
     let PasswordRegex = new RegExp('^(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{8,}$');
-    console.log(password);
+
     if (name == '') {
       Alert.alert('User Name is required..!');
     } else if (!EmailRegex.test(email)) {
@@ -136,13 +136,13 @@ export class SignUp extends Component<Iprops, IStte> {
 
   };
   googleLogin = async () => {
-    console.log("in ios")
-    // if(Platform.OS=="android"){
+
+
       try {
         await GoogleSignin.hasPlayServices();
         const userInfo = await GoogleSignin.signIn();
         Alert.alert(String(userInfo?.user?.name)+"Thanks For Sign Up")
-        console.log(userInfo);
+
         this.props.navigation?.navigate('bottomtab');
       } catch (error: any) {
         Alert.alert(error);

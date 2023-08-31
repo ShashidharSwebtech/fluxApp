@@ -12,12 +12,16 @@ jest.mock("react-native-vector-icons/Ionicons", () => () => <></>)
 jest.mock("react-native-vector-icons/FontAwesome6", () => () => <></>)
 
 
-const { View: MockedView } = require("react-native")
 
+const { View: MockedView } = require("react-native")
 jest.mock("@react-navigation/bottom-tabs", () => ({
   createBottomTabNavigator: () => ({
-    Screen: () => <MockedView ></MockedView>,
-    Navigator: () => <></>
+    Navigator: ({ children }: { children: React.ReactElement }) => <>{children}</>,
+    Screen: (props: any) => {
+      props.options.tabBarIcon({ color:"#fff" })
+
+      return <MockedView {...props} />
+  }
   })
 }))
 

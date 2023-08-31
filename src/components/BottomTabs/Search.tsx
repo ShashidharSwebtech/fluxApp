@@ -9,17 +9,16 @@ import {
 } from 'react-native-responsive-dimensions';
 import FontAwesome6Icon from 'react-native-vector-icons/FontAwesome6';
 import { searchimg1, searchimg2, searchimg3, searchimg4 } from '../../assets';
-import { createDrawerNavigator } from '@react-navigation/drawer';
 import AntIcon from 'react-native-vector-icons/AntDesign';
 import { connect } from 'react-redux';
+import { clothsData } from '../../store/SearchSlice';
 
-const Drawer = createDrawerNavigator();
 interface Iprops {
   navigation?:{
     navigate:React.FC,
     goBack:()=>void
   },
-  clothsData:{id:number,title:string,items:string}[]
+
 }
 interface Istate {
   searchtext: string;
@@ -83,7 +82,7 @@ export class Search extends Component<Iprops, Istate> {
               />
             </View>
             <TouchableOpacity style={[styles.inputParent,{width:rh(7),marginLeft:rw(2)}]}
-            onPress={()=>this.props.navigation?.navigate("searchfilter")}
+            onPress={()=>this.props.navigation?.navigate("drawer")}
             >
                 <FontAwesome6Icon name="sliders" color={"#777E90"} size={rh(3.5)}/>
             </TouchableOpacity>
@@ -113,7 +112,8 @@ export class Search extends Component<Iprops, Istate> {
                 },index==1&&{
                   height:rh(15)
                 }]}>
-                  <Image source={item.image}
+                  <Image 
+                  source={item.image}
                   resizeMode='stretch'
                   style={styles.img}/>
                 </View>
@@ -131,12 +131,12 @@ export class Search extends Component<Iprops, Istate> {
 }
 
 
-const mpaState=(state:any)=>({
-  clothsData:state.search.clothsData
-})
+// const mpaState=(state:any)=>({
+//   clothsData:state.search.clothsData
+// })
 
 
-export default connect(mpaState)(Search);
+export default Search;
 
 const styles = StyleSheet.create({
   container: {
